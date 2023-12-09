@@ -15,7 +15,7 @@ class Folder extends Model
         'id',
         'user_id',
         'name',
-        'parent_folder_id'
+        'parent_folder_id',
     ];
 
     public function user()
@@ -30,12 +30,12 @@ class Folder extends Model
 
     public function parentFolder()
     {
-        return $this->belongsTo(Folder::class, 'parent_folder_id');
+        return $this->belongsTo(Folder::class);
     }
 
     public function childFolders()
     {
-        return $this->hasMany(Folder::class, 'parent_folder_id');
+        return $this->hasMany(Folder::class);
     }
 
 }

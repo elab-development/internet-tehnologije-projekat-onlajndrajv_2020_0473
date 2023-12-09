@@ -14,7 +14,7 @@ class User extends Model
     protected $fillable = [
         'id',
         'username',
-        'password'
+        'password',
     ];
 
     public function files()

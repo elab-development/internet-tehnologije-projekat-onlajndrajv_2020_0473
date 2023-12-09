@@ -18,7 +18,7 @@ class File extends Model
         'size',
         'mime_type',
         'content',
-        'parent_folder_id'
+        'parent_folder_id',
     ];
 
     public function user()
