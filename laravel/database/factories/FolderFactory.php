@@ -20,7 +20,7 @@ class FolderFactory extends Factory
         $users = User::pluck('id')->toArray();
         return [
             'user_id'=> fake()->randomElement($users),
-            'name'=>fake()->title(),
+            'name'=>fake()->sentence(3),
         ];
     }
 }

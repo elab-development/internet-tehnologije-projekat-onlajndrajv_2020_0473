@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\File;
+use App\Models\User;
+use App\Models\Folder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +17,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('main', [
+        'users' => User::all(),
+    ]);
+});
+
+Route::get('/users/{id}', function ($id) {
+    return view('user_data', [
+        'user' => User::find($id),
+        'folders' => Folder::all()->where('user_id', $id),
+        'files' => File::all()->where('user_id', $id),
+    ]);
 });
