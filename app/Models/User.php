@@ -50,7 +50,7 @@ class User extends Authenticatable
         return $this->hasMany(Company::class, 'owner_id');
     }
 
-    public function employeeOf()
+    public function employee()
     {
         return $this->hasOne(Employee::class);
     }
