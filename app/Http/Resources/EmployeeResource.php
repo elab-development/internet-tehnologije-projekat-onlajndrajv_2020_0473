@@ -13,9 +13,10 @@ class EmployeeResource extends JsonResource
      * @return array<string, mixed>
      */
     public static $wrap = 'employee';
-     public function toArray(Request $request): array
+    public function toArray(Request $request): array
     {
         return [
+            'id' => $this->resource->id,
             'user' => new UserResource($this->resource->user),
             'company' => new CompanyResource($this->resource->company),
         ];
