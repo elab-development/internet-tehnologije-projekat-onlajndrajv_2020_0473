@@ -24,10 +24,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        //provera kredencijala u bazi
         $request->authenticate();
 
+        //regenerisanje tokena sesije
         $request->session()->regenerate();
 
+        //vracanje view-a
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

@@ -32,3 +32,4 @@ Route::resource('companies.files', CompanyFileController::class)->only(['index',
 Route::resource('companies.employees', CompanyEmployeeController::class)->only(['index', 'store']);
 
 //TODO PROVERITI KOJE OPERACIJE TREBA DODATI I VIDETI KAKO IH IMPLEMENTIRATI
+
