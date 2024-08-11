@@ -4,69 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FileCollection;
 use App\Http\Resources\FileResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function show($id)
     {
-        $files = File::all();
-        return new FileCollection($files);
+        $file = File::get()->where('id', $id)->first();
+        if (is_null($file)) {
+            return response()->json('Data not found', 404);
+        }
+        return new FileResource($file);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function destroy($id)
     {
-        //
+        $file = File::find($id);
+        $file->delete();
+
+        return new JsonResponse([
+            'message' => 'File with id: ' . $id . ' deleted successfully!',
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function update($id, Request $request)
     {
-        //
-    }
+        $file = File::find($id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(File $file)
-    {
-        // $file = File::find($file_id);
-        // return $file;
-        $file_resource = new FileResource($file);
-        return $file_resource;
-    }
+        if (is_null($file)) {
+            return response()->json('Data not found', 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(File $file)
-    {
-        //
-    }
+        $file->fill($request->all());
+        $file->save();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, File $file)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(File $file)
-    {
-        //
+        return $file;
     }
 }
