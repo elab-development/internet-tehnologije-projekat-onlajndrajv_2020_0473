@@ -1,0 +1,10 @@
+.nav-bar {
+  background-color: aquamarine;
+  padding: 10px;
+  display: flex;
+  flex-direction: row-reverse
+}
+
+.nav-element {
+    margin-left: 10px;
+}

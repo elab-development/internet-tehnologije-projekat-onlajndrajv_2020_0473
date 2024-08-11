@@ -1,0 +1,16 @@
+.file-wrapper {
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.file-body {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+
+.file-title {
+    margin: 5px;
+}
