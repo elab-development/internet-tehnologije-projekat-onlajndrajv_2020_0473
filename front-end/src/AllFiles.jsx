@@ -1,25 +1,16 @@
-import React from 'react'
-import File from './File'
+import React from "react";
+import File from "./File";
 import "./AllFiles.css";
 
-function AllFiles() {
+
+const AllFiles = ({ files }) => {
   return (
     <div className="all-files">
-      <File />
-      <File />
-      <File />
-      <File />
-      <File />
-      <File />
-      <File />
-      <File />
-      <File />
-      <File />
-      <File />
-      <File />
-      <File />
+      {files.map((file) => (
+        <File file={file} />
+      ))}
     </div>
-  )
-}
+  );
+};
 
-export default AllFiles
+export default AllFiles;

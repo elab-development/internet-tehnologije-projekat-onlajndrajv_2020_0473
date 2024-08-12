@@ -1,13 +1,18 @@
 import React from "react";
-import "./File.css"
+import "./File.css";
+import { AiOutlineEye } from "react-icons/ai";
 
-const File = () => {
+function File({ file }) {
   return (
     <div className="file-wrapper">
-        <div className="file-body"></div>
-        <h6 className="file-title">Test 123</h6>
+      <div className="file-body">
+        <button>
+          <AiOutlineEye />
+        </button>
+      </div>
+      <h6 className="file-title">{file.title}</h6>
     </div>
   );
-};
+}
 
 export default File;
