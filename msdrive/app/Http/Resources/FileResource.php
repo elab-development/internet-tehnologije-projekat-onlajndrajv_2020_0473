@@ -19,7 +19,7 @@ class FileResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'path' => $this->resource->path,
-            'company' => new CompanyResource($this->resource->company),
+            'company' => $this->resource->company->name,
         ];
     }
 }

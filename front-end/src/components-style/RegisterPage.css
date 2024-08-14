@@ -7,44 +7,27 @@
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
 
-  background: rgb(2, 0, 36);
-  background: radial-gradient(
-    circle,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(0, 212, 255, 1) 100%
+  background: rgb(174, 238, 193);
+  background: linear-gradient(
+    90deg,
+    rgba(174, 238, 193, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
   );
+  background-attachment: fixed; /*edit*/
 }
 
 section {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
-  background-color: white;
   padding: 20px 25px;
   border-radius: 10px;
 }
 
-.name-wrapper {
+.wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.email-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.password-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.register-wrapper {
-  display: flex;
-  justify-content: space-between;
 }
 
 .register-wrapper a {
@@ -80,6 +63,14 @@ input:focus {
   background: white;
 }
 
+.checkbox {
+  display: flex;
+}
+
+.checkbox input {
+  margin: 0 5px 0 0;
+}
+
 .btn-register {
   font-family: "Trebuchet MS", "Arial Narrow", Arial, sans-serif;
   font-size: 16px;
@@ -89,6 +80,18 @@ input:focus {
   border: none;
   padding: 3px;
   border-radius: 3px;
+
+  transition: all 0.3s;
+  position: relative;
+}
+
+.btn-register:hover {
+  background: #468af0;
+}
+
+.btn-register:active {
+  background: #468af0;
+  top: 2px;
 }
 
 button:hover {

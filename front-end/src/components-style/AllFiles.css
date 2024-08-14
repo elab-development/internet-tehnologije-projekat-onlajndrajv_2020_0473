@@ -2,3 +2,9 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.all-files-title {
+  text-align: center;
+  margin: 10px 20px;
+  color: #2f4858;
+}

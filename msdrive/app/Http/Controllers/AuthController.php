@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CompanyResource;
+use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -52,7 +55,7 @@ class AuthController extends Controller
                 'success' => false,
                 'status' => 'error',
                 'message' => 'Returned user is not of type \'User\'. Probably null.',
-            ], 404);
+            ], 409);
         }
 
         return response()->json([
@@ -69,25 +72,56 @@ class AuthController extends Controller
     /* Register API */
     public function register(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:6',
-                'password_confirmation' => 'required|same:password|string'
-            ]
-        );
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+        if ($request->add_company) {
+            $validator = Validator::make(
+                $request->only(['name', 'email', 'password', 'password_confirmation', 'company_name', 'description']),
+                [
+                    'name' => 'required|string|max:255',
+                    'email' => 'required|string|email|max:255|unique:users',
+                    'password' => 'required|string|min:6',
+                    'password_confirmation' => 'required|same:password|string',
+                    'company_name' => 'required|string|max:255',
+                    'description' => 'required|string|max:255',
+                ]
+            );
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+
+            Company::create([
+                'name' => $request->company_name,
+                'description' => $request->description,
+                'owner_id' => $user->id
+            ]);
+        } else {
+            $validator = Validator::make(
+                $request->only(['name', 'email', 'password', 'password_confirmation']),
+                [
+                    'name' => 'required|string|max:255',
+                    'email' => 'required|string|email|max:255|unique:users',
+                    'password' => 'required|string|min:6',
+                    'password_confirmation' => 'required|same:password|string',
+                ]
+            );
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
         }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
 
         $token = $user->createToken('authToken')->plainTextToken;
 
@@ -103,20 +137,42 @@ class AuthController extends Controller
         ]);
     }
 
+    /*Logout API */
     public function logout()
     {
         $user = Auth::user();
-        $token = null;
+
         if ($user instanceof \App\Models\User) {
-            $token = $user->currentAccessToken();
+            $user->tokens()->delete();
+            return response()->json([
+                'success' => true,
+                'status' => 'success',
+                'message' => 'User Logged Out Successfully And Deleted Token',
+                'user' => $user,
+            ]);
         }
-        Auth::logout();
-        return [$user, $token];
+
+        return response()->json([
+            'success' => false,
+            'status' => 'error',
+            'message' => 'Probably Not Proper Token'
+        ], 409);
     }
 
     /*User Detail API */
     public function userDetails()
     {
-        return response()->json(Auth::user());
+        $user = Auth::user();
+
+        $employees = Employee::all()->where('user_id', $user->id);
+
+        if ($employees->first() != null) 
+        {
+            $company_id = $employees->first()->company_id;
+            $company = Company::find($company_id);
+            return response()->json(['user'=>Auth::user(), 'employed' => true,'company'=> new CompanyResource($company)]);
+        };
+
+        return response()->json(['user'=>Auth::user(), 'employed' => false]);
     }
 }

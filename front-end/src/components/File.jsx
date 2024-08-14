@@ -6,19 +6,19 @@ import { RiDeleteBinFill } from "react-icons/ri";
 import { MdModeEdit } from "react-icons/md";
 
 function fileView(file) {
-  console.log("Funkcija pogledaj: "+file.title);
+  console.log("Funkcija pogledaj: "+file.name);
 }
 
 function fileEdit(file) {
-  console.log("Funkcija edit: "+file.title);
+  console.log("Funkcija edit: "+file.name);
 }
 
 function fileDownload(file) {
-  console.log("Funkcija skini: "+file.title);
+  console.log("Funkcija skini: "+file.name);
 }
 
 function fileDelete(file) {
-  console.log("Funkcija izbrisi: "+file.title);
+  console.log("Funkcija izbrisi: "+file.name);
 }
 
 function File({ file }) {
@@ -38,7 +38,7 @@ function File({ file }) {
           <RiDeleteBinFill />
         </button>
       </div>
-      <h6 className="file-title">{file.title}</h6>
+      <h6 className="file-title">{file.name}</h6>
     </div>
   );
 }

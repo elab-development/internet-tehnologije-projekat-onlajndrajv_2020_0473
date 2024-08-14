@@ -13,23 +13,34 @@ const RegisterPage = () => {
     email: "",
     password: "",
     password_confirmation: "",
+    add_company: false,
+    company_name: "",
+    description: "",
   });
 
   const [errorsState, setErrorsState] = useState({
     name: {
-      style: "block",
+      style: "none",
       message: "",
     },
     email: {
-      style: "block",
+      style: "none",
       message: "",
     },
     password: {
-      style: "block",
+      style: "none",
       message: "",
     },
     password_confirmation: {
-      style: "block",
+      style: "none",
+      message: "",
+    },
+    company_name: {
+      style: "none",
+      message: "",
+    },
+    description: {
+      style: "none",
       message: "",
     },
   });
@@ -43,7 +54,14 @@ const RegisterPage = () => {
   }
 
   function handleErrorMessages(res) {
-    const fields = ["name", "email", "password", "password_confirmation"];
+    const fields = [
+      "name",
+      "email",
+      "password",
+      "password_confirmation",
+      "company_name",
+      "description",
+    ];
 
     const errors = fields.reduce((acc, field) => {
       acc[field] = {
@@ -55,6 +73,15 @@ const RegisterPage = () => {
 
     setErrorsState(errors);
   }
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleChange = () => {
+    setIsChecked(!isChecked);
+    let data = userData;
+    data.add_company = !data.add_company;
+    setUserData(data);
+  };
 
   function handleRegister(e) {
     e.preventDefault();
@@ -74,6 +101,7 @@ const RegisterPage = () => {
         console.log(e);
         handleErrorMessages(e.response.data);
       });
+    console.log(userData);
   }
 
   return (
@@ -81,7 +109,7 @@ const RegisterPage = () => {
       <section>
         <form onSubmit={handleRegister}>
           <div>
-            <div className="name-wrapper">
+            <div className="wrapper">
               <p>Name: </p>
               <input
                 type="text"
@@ -96,7 +124,7 @@ const RegisterPage = () => {
             </p>
           </div>
           <div>
-            <div className="email-wrapper">
+            <div className="wrapper">
               <p>Email: </p>
               <input
                 type="text"
@@ -111,7 +139,7 @@ const RegisterPage = () => {
             </p>
           </div>
           <div>
-            <div className="password-wrapper">
+            <div className="wrapper">
               <p>Password: </p>
               <input
                 type="password"
@@ -129,7 +157,7 @@ const RegisterPage = () => {
             </p>
           </div>
           <div>
-            <div className="password-wrapper">
+            <div className="wrapper">
               <p>Password Confirmation: </p>
               <input
                 type="password"
@@ -146,6 +174,54 @@ const RegisterPage = () => {
               {errorsState.password_confirmation.message}
             </p>
           </div>
+          <div className="checkbox">
+            <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={handleChange}
+            ></input>
+            <p>Do you want to create a company also?</p>
+          </div>
+          {isChecked ? (
+            <>
+              <div>
+                <div className="wrapper">
+                  <p>Company name: </p>
+                  <input
+                    type="text"
+                    placeholder="Enter company name"
+                    name="company_name"
+                    id="company_name"
+                    onInput={handleInput}
+                  />
+                </div>
+                <p
+                  className="error"
+                  style={{ display: errorsState.company_name.style }}
+                >
+                  {errorsState.company_name.message}
+                </p>
+              </div>
+              <div>
+                <div className="wrapper">
+                  <p>Company description: </p>
+                  <input
+                    type="text"
+                    placeholder="Enter company description"
+                    name="description"
+                    id="description"
+                    onInput={handleInput}
+                  />
+                </div>
+                <p
+                  className="error"
+                  style={{ display: errorsState.description.style }}
+                >
+                  {errorsState.description.message}
+                </p>
+              </div>
+            </>
+          ) : null}
           <button className="btn-register" type="submit">
             Register
           </button>

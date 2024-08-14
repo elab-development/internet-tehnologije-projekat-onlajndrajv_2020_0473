@@ -1,0 +1,34 @@
+.all-employees-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px;
+}
+
+.employee-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: cadetblue;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.employee-wrapper h5 {
+  margin: 0;
+}
+
+.btn.btn-fire {
+  padding: 5px 10px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.btn.btn-fire:hover {
+  background: rgb(192, 0, 0);
+}
+
+.btn.btn-fire:active {
+  top: 2px;
+}
