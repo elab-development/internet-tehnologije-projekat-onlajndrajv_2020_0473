@@ -26,7 +26,7 @@ function NavBar() {
 
   return (
     <div className="nav-bar">
-      <Link className="nav-element" onClick={handleLogout} to="/login">
+      <Link className="nav-element" onClick={handleLogout} to={"/login"}>
         Log Out
       </Link>
       <Link className="nav-element" to="/user">

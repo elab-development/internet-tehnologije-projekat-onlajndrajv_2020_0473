@@ -17,7 +17,12 @@ function App() {
     },
   };
 
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState();
+
+  const [files, setFiles] = useState();
+  const [employees, setEmployees] = useState();
+  const [users, setUsers] = useState();
 
   function handleUserDetail() {
     axios
@@ -25,11 +30,60 @@ function App() {
       .then((res) => {
         console.log("Povucen korisnik preko rute api/userdetail");
         console.log(res.data);
+
         setUser(res.data);
+        getFilesForCompany(res.data.company.id);
+        getEmployeesFromCompany(res.data.company.id);
+        getNotEmployedUsers();
       })
       .catch((e) => {
         console.log(e);
       });
+  }
+
+  function getFilesForCompany(id) {
+    axios
+      .get("api/companies/" + id + "/files")
+      .then((res) => {
+        console.log(res.data.files);
+        setFiles(res.data.files);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  function getEmployeesFromCompany(id) {
+    axios
+      .get("api/companies/" + id + "/employees")
+      .then((res) => {
+        console.log(res.data.employees);
+        setEmployees(res.data.employees);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  function getNotEmployedUsers() {
+    axios
+      .get("api/users")
+      .then((res) => {
+        console.log(res.data);
+        setUsers(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  function handleAppendEmployee(employee) {
+    setEmployees([...employees, employee]);
+  }
+
+  function handleAppendUser(user) {
+    setUsers([...users, user]);
   }
 
   useEffect(() => {
@@ -39,16 +93,34 @@ function App() {
   return (
     <BrowserRouter className="app">
       <Routes>
-        <Route path="/dashboard" element={<Dashboard user={user} />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <Dashboard
+              loading={loading}
+              user={user}
+              files={files}
+              employees={employees}
+              users={users}
+              setEmployees={setEmployees}
+              setUsers={setUsers}
+              handleAppendEmployee={handleAppendEmployee}
+              handleAppendUser={handleAppendUser}
+            />
+          }
+        />
         <Route
           path="/user/*"
-          element={<h1> User logovan! Primer druge rute! </h1>}
+          element={
+            <>
+              <NavBar />
+              <h1> User logovan! Primer druge rute! </h1>
+            </>
+          }
         />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        {user && (
-          <Route path="/employees" element={<EmployeesPage user={user} />} />
-        )}
+        <Route path="/employees" element={null} />
       </Routes>
     </BrowserRouter>
   );

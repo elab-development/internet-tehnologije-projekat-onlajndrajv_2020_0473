@@ -8,6 +8,50 @@ body {
   background-attachment: fixed; /*edit*/
 }
 
+.loading-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center;
+
+  background: rgb(174, 238, 193);
+  background: linear-gradient(
+    90deg,
+    rgba(174, 238, 193, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
+  );
+
+  overflow: hidden;
+}
+
+.loading {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: progress;
+
+  border-radius: 50%;
+  border-top: 5px solid mintcream;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid rgb(195, 255, 225);
+  border-right: 5px solid transparent;
+
+  animation: loading 1s linear infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .dashboard-main h4 {
   margin: 10px 20px;
   color: mintcream;
@@ -39,12 +83,12 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 10px 15px;
+  padding: 5px;
   gap: 20px;
   border-radius: 10px;
 }
 
-.employees-info h4{
+.employees-info h4 {
   margin: 0;
 }
 

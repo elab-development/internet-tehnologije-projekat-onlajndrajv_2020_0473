@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use App\Models\Employee;
 use Closure;
@@ -18,20 +19,12 @@ class EnsureUserIsCompanyOwner
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
+        $user = $request->user();
 
+        $company = Company::find($request->company_id);
 
-        //VIDETI DA LI TREBA RETURN ILI NESTO DRUGO
-        if (is_null($user)) {
-            return response()->json('There is no logged user!');
-        }
-
-        if (Company::where('owner_id', $user->id)->exists()) {
-            return response()->json(['It is owner!', Company::where('owner_id', $user->id)->first()]);
-        }
-
-        if (!Employee::where('user_id', $user->id)->exists()) {
-            return response()->json('User does not work in any company!');
+        if ($user->id != $company->owner_id) {
+            return response()->json('Not an owner!');
         }
 
         return $next($request);

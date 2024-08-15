@@ -4,37 +4,82 @@ import AllFiles from "./AllFiles";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../components-style/Dashboard.css";
-import { useNavigate } from "react-router-dom";
+import EmployeesPage from "./EmployeesPage";
 
-const Dashboard = ({user}) => {
-
-  let navigate = useNavigate();
+const Dashboard = ({
+  loading,
+  user,
+  files,
+  employees,
+  users,
+  setEmployees,
+  setUsers,
+  handleAppendEmployee,
+  handleAppendUser,
+}) => {
+  const [view, setView] = useState({
+    name: "files",
+    text: "Show all employees",
+  });
 
   function handleClick() {
-    navigate("/employees");
+    if (view.name == "files") {
+      setView({
+        name: "employees",
+        text: "Show all files",
+      });
+    } else {
+      setView({
+        name: "files",
+        text: "Show all employees",
+      });
+    }
   }
 
   return (
     <>
-      <NavBar />
-      {user && (
-        <>
-          <div className="dashboard-main">
-            <div className="dashboard-info info-company">
-              <h4>Company: {user.company.name}</h4>
-              <h4>Description: {user.company.description}</h4>
-              <h4>Owner: {user.company.owner.name}</h4>
-            </div>
+      {loading && (
+        <div className="loading-wrapper">
+          <div className="loading"></div>
+        </div>
+      )}
 
-            <div className="dashboard-info employees-info">
-              <h4>Employee list: </h4>
-              <button className="btn btn-view-employees" onClick={handleClick}>
-                View all employees
-              </button>
+      {!loading && (
+        <div>
+          <NavBar />
+          {user && (
+            <div className="dashboard-main">
+              <div className="dashboard-info info-company">
+                <h4>Company: {user.company.name}</h4>
+                <h4>Description: {user.company.description}</h4>
+                <h4>Owner: {user.company.owner.name}</h4>
+              </div>
+
+              <div className="dashboard-info employees-info">
+                <button
+                  className="btn btn-view-employees"
+                  onClick={handleClick}
+                >
+                  {view.text}
+                </button>
+              </div>
             </div>
-          </div>
-          <AllFiles company={user.company} />
-        </>
+          )}
+          {user && view.name == "files" && (
+            <AllFiles company={user.company} files={files} />
+          )}
+          {user && view.name == "employees" && (
+            <EmployeesPage
+              company={user.company}
+              employees={employees}
+              users={users}
+              setEmployees={setEmployees}
+              setUsers={setUsers}
+              handleAppendEmployee={handleAppendEmployee}
+              handleAppendUser={handleAppendUser}
+            />
+          )}
+        </div>
       )}
     </>
   );

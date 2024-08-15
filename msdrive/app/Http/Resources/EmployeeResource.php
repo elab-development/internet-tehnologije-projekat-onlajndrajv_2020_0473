@@ -20,7 +20,7 @@ class EmployeeResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'user' => new UserResource($this->resource->user),
-            'company' => $this->resource->company->name,
+            'company' => $this->resource->company->only(['id', 'name']),
             'employement_date' => $dt->format('d.m.Y.')
         ];
     }

@@ -1,0 +1,19 @@
+.header-employees {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-employees h4 {
+  color: #2f4858;
+}
+
+.all-employees-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 15px;
+    margin: 20px;
+  }

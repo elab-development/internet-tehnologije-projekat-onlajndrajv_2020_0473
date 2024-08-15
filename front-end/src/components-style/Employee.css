@@ -1,9 +1,4 @@
-.all-employees-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin: 20px;
-}
+
 
 .employee-wrapper {
   display: flex;

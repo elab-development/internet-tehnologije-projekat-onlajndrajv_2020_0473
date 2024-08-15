@@ -19,26 +19,5 @@ class CompanyEmployeeController extends Controller
         return new EmployeeCollection($employees);
     }
 
-    public function store(Request $request, $company)
-    {
-        try {
-            $request->validate([
-                'user_id' => 'required|unique:employees',
-            ]);
 
-            $employee = new Employee();
-
-            $employee->company_id = $company;
-            $employee->user_id = $request->user_id;
-
-            $employee->save();
-
-            return new EmployeeResource($employee);
-        } catch (ValidationException $e) {
-            return new JsonResponse([
-                'message' => 'Validation failed',
-                'errors' => $e->errors(),
-            ], 422);
-        }
-    }
 }
