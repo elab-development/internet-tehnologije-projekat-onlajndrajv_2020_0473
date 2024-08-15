@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const LoginPage = () => {
+const LoginPage = ({ setLogged }) => {
   let navigate = useNavigate();
 
   const [userData, setUserData] = useState({
@@ -43,6 +43,7 @@ const LoginPage = () => {
             "authToken",
             res.data.authorisation.token
           );
+          setLogged(true);
           navigate("/dashboard");
         }
       })
@@ -56,7 +57,7 @@ const LoginPage = () => {
     const fields = ["email", "password"];
     let errors = errorsState;
 
-    if (res.status == 401) {
+    if (res != null && res.status == 401) {
       errors.password.style = "block";
       errors.password.message = "There credentials does not exist";
     } else {

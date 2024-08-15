@@ -17,17 +17,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        User::factory(5)->create();
+        // User::factory(5)->create();
 
-        Company::factory(3)->create();
+        // Company::factory(3)->create();
 
-        File::factory(15)->create();
+        File::factory(100)->create();
 
-        Employee::factory()->create();
-        Employee::factory()->create();
-        Employee::factory()->create();
-        Employee::factory()->create();
-        Employee::factory()->create();
+        // Employee::factory()->create();
+        // Employee::factory()->create();
+        // Employee::factory()->create();
+        // Employee::factory()->create();
+        // Employee::factory()->create();
 
 
         // User::factory()->create([

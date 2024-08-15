@@ -26,14 +26,14 @@ class CompanyFileController extends Controller
         try {
             $request->validate([
                 'name' => ['required', 'string', 'max:255'],
-                'path' => ['required', 'string', 'max:255'],
             ]);
 
             $file = new File();
 
-            $file->name  = $request->name;
-            $file->path  = $request->path;
-            $file->company_id  = $company;
+            $file->fill($request->all());
+            $file->company_id = $company;
+            $file->data = $request->data;
+            $file->path = "/random/path";
 
             $file->save();
 
@@ -45,5 +45,4 @@ class CompanyFileController extends Controller
             ], 422);
         }
     }
-    
 }

@@ -17,6 +17,8 @@ function App() {
     },
   };
 
+  const [logged, setLogged] = useState();
+
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState();
 
@@ -43,7 +45,7 @@ function App() {
 
   function getFilesForCompany(id) {
     axios
-      .get("api/companies/" + id + "/files")
+      .get("api/companies/" + id + "/files", config)
       .then((res) => {
         console.log(res.data.files);
         setFiles(res.data.files);
@@ -56,7 +58,7 @@ function App() {
 
   function getEmployeesFromCompany(id) {
     axios
-      .get("api/companies/" + id + "/employees")
+      .get("api/companies/" + id + "/employees", config)
       .then((res) => {
         console.log(res.data.employees);
         setEmployees(res.data.employees);
@@ -68,7 +70,7 @@ function App() {
 
   function getNotEmployedUsers() {
     axios
-      .get("api/users")
+      .get("api/users", config)
       .then((res) => {
         console.log(res.data);
         setUsers(res.data);
@@ -87,14 +89,14 @@ function App() {
   }
 
   useEffect(() => {
-    handleUserDetail();
-  }, []);
+      handleUserDetail();
+  }, [logged]);
 
   return (
     <BrowserRouter className="app">
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage setLogged={setLogged} />} />
         <Route
           path="/dashboard"
           element={
@@ -104,10 +106,12 @@ function App() {
               files={files}
               employees={employees}
               users={users}
+              setFiles={setFiles}
               setEmployees={setEmployees}
               setUsers={setUsers}
               handleAppendEmployee={handleAppendEmployee}
               handleAppendUser={handleAppendUser}
+              setLogged={setLogged}
             />
           }
         />
@@ -116,7 +120,7 @@ function App() {
           element={
             <>
               <NavBar />
-              <h1> User logovan! Primer druge rute! </h1>
+              <h1>Again h1</h1>
             </>
           }
         />

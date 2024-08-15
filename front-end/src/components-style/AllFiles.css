@@ -1,3 +1,9 @@
+.title-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .all-files {
   display: flex;
   flex-wrap: wrap;

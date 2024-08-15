@@ -1,3 +1,5 @@
+pri dodavanju employee zatrazi role
+
 obratiti paznju na ogranicenja u bazi:
     - 1 user moze biti 1 employee
 

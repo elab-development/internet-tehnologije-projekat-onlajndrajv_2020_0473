@@ -21,10 +21,10 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('userdetail', 'userDetails')->middleware('auth:sanctum');
 });
 
-Route::get('/users', [UserController::class, 'index']);
+Route::get('/users', [UserController::class, 'index'])->middleware('auth:sanctum');
 
-Route::resource('files', FileController::class)->only(['show', 'update', 'destroy']);
+Route::resource('files', FileController::class)->only(['show', 'update', 'destroy'])->middleware('auth:sanctum');
 Route::resource('employees', EmployeeController::class)->only(['store', 'destroy'])->middleware(['owner', 'auth:sanctum']);
 
-Route::resource('companies.files', CompanyFileController::class)->only(['index', 'store']);
-Route::resource('companies.employees', CompanyEmployeeController::class)->only(['index']);
+Route::resource('companies.files', CompanyFileController::class)->only(['index', 'store'])->middleware('auth:sanctum');
+Route::resource('companies.employees', CompanyEmployeeController::class)->only(['index'])->middleware('auth:sanctum');

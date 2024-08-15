@@ -1,8 +1,7 @@
 import React from "react";
 import NavBar from "./NavBar";
 import AllFiles from "./AllFiles";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import "../components-style/Dashboard.css";
 import EmployeesPage from "./EmployeesPage";
 
@@ -12,6 +11,7 @@ const Dashboard = ({
   files,
   employees,
   users,
+  setFiles,
   setEmployees,
   setUsers,
   handleAppendEmployee,
@@ -66,7 +66,11 @@ const Dashboard = ({
             </div>
           )}
           {user && view.name == "files" && (
-            <AllFiles company={user.company} files={files} />
+            <AllFiles
+              company={user.company}
+              files={files}
+              setFiles={setFiles}
+            />
           )}
           {user && view.name == "employees" && (
             <EmployeesPage

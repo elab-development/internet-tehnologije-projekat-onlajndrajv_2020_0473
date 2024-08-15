@@ -6,15 +6,18 @@
 }
 
 .file-body {
-  width: 100px;
-  height: 100px;
+  width: 84px;
+  height: 84px;
   background-color: #2F4858;
+
+  
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: center;
+  align-content: center;
+  justify-content: center;
   border-radius: 10px;
-  padding: 3px;
+  padding: 7px;
+  gap: 7px;
 }
 
 .file-title {
@@ -59,7 +62,8 @@
 }
 
 .btn svg {
-  color: #F6AE2D;
+  /* color: #F6AE2D; */
+  color: mintcream;
   height: 20px;
   width: 20px;
 }

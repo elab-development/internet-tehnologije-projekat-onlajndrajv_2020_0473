@@ -25,6 +25,7 @@ class FileFactory extends Factory
         return [
             'name' => $this->faker->word . '.' . $this->faker->fileExtension,
             'path' => $this->faker->filePath(),
+            'description' => $this->faker->paragraph(1),
             'company_id' => $company->id,
         ];
     }

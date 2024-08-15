@@ -3,7 +3,7 @@ import "../components-style/Employee.css";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const Employee = ({ employee, set, all, appendToUsers }) => {
+const Employee = ({ employee, set, all, appendToUsers, img }) => {
   function handleFireClick() {
     Swal.fire({
       title: "Are you sure?",
@@ -53,6 +53,7 @@ const Employee = ({ employee, set, all, appendToUsers }) => {
 
   return (
     <div className="employee-wrapper">
+      <img src={img} alt="" />
       <h5>Name: {employee.user.name}</h5>
       <h5>E-mail: {employee.user.email}</h5>
       <h5>Employement date: {employee.employement_date}</h5>

@@ -18,6 +18,7 @@ class FileResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
+            'description' => $this->resource->description,
             'path' => $this->resource->path,
             'company' => $this->resource->company->name,
         ];

@@ -58,6 +58,7 @@ const EmployeesPage = ({
               set={setEmployees}
               appendToUsers={handleAppendUser}
               all={employees}
+              img={"https://picsum.photos/200"}
               key={employee.id}
             />
           ))}
