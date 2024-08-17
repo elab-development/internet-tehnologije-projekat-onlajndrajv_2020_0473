@@ -1,3 +1,6 @@
+path izmena
+folderi
+
 pri dodavanju employee zatrazi role
 
 obratiti paznju na ogranicenja u bazi:

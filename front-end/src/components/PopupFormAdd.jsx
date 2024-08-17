@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../components-style/PopupForm.css";
 import OutsideAlerter from "./OutsideAlerter";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function PopupFormAdd({ setPopup, company_id, addToFiles }) {
   const config = {
@@ -14,6 +15,26 @@ function PopupFormAdd({ setPopup, company_id, addToFiles }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
+  const [path, setPath] = useState("");
+
+  function notification() {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      width: "fit-content",
+      showConfirmButton: false,
+      timer: 3500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: file.name + " is added successfully!",
+    });
+  }
 
   function handleCancel(e) {
     e.preventDefault();
@@ -23,23 +44,50 @@ function PopupFormAdd({ setPopup, company_id, addToFiles }) {
   function handleConfirm(e) {
     e.preventDefault();
 
+    console.log("POCEOOOO");
+    console.log("POCEOOOO");
+    console.log("POCEOOOO");
+    console.log("POCEOOOO");
+    console.log("POCEOOOO");
+
+    console.log(file);
+
     const formData = new FormData();
 
     formData.append("name", name);
     formData.append("description", description);
     formData.append("data", file);
+    formData.append("type", file.type);
+
+    const extension = file.name.split(".").pop();
+
+    formData.append("extension", extension);
+    formData.append("path", path);
 
     axios
       .post("api/companies/" + company_id + "/files", formData, config)
       .then((res) => {
         console.log("Uspesno dodavanje fajla: " + name + " !");
+        console.log(res);
+
+        const file_from_server = res.data.file;
 
         addToFiles({
-          id: res.data.file.id,
-          name: name,
-          description: description,
-          path: "treba uneti",
+          id: file_from_server.id,
+          name: file_from_server.name,
+          description: file_from_server.description,
+          path: file_from_server.path,
+          extension: file_from_server.extension,
         });
+
+        setPopup(false);
+        notification();
+
+        console.log("ZAVRSIOOOO");
+        console.log("ZAVRSIOOOO");
+        console.log("ZAVRSIOOOO");
+        console.log("ZAVRSIOOOO");
+        console.log("ZAVRSIOOOO");
       })
       .catch((e) => {
         console.log(e);
@@ -74,6 +122,17 @@ function PopupFormAdd({ setPopup, company_id, addToFiles }) {
             </label>
             <label>
               Path:
+              <input
+                className="input"
+                name="path"
+                id="path"
+                type="text"
+                placeholder="path/to/file"
+                onInput={(e) => setPath(e.target.value)}
+              />
+            </label>
+            <label>
+              File:
               <input
                 className="input"
                 name="path"

@@ -17,14 +17,37 @@ Route::get('/user', function (Request $request) {
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
-    Route::post('logout', 'logout')->middleware('auth:sanctum');
-    Route::get('userdetail', 'userDetails')->middleware('auth:sanctum');
 });
 
-Route::get('/users', [UserController::class, 'index'])->middleware('auth:sanctum');
+Route::resource('files', FileController::class)->only([
+    'update',
+    'destroy',
+    'show',
+]);
 
-Route::resource('files', FileController::class)->only(['show', 'update', 'destroy'])->middleware('auth:sanctum');
-Route::resource('employees', EmployeeController::class)->only(['store', 'destroy'])->middleware(['owner', 'auth:sanctum']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
 
-Route::resource('companies.files', CompanyFileController::class)->only(['index', 'store'])->middleware('auth:sanctum');
-Route::resource('companies.employees', CompanyEmployeeController::class)->only(['index'])->middleware('auth:sanctum');
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('logout', 'logout');
+        Route::get('userdetail', 'userDetails');
+    });
+
+    // Route::resource('files', FileController::class)->only([
+    //     'show',
+    //     'update',
+    //     'destroy',
+    // ]);
+    Route::resource('companies.files', CompanyFileController::class)->only([
+        'index',
+        'store',
+    ]);
+
+    Route::resource('employees', EmployeeController::class)
+        ->only(['store', 'destroy'])
+        ->middleware('owner');
+    Route::resource(
+        'companies.employees',
+        CompanyEmployeeController::class
+    )->only(['index']);
+});

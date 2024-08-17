@@ -21,6 +21,8 @@ class FileResource extends JsonResource
             'description' => $this->resource->description,
             'path' => $this->resource->path,
             'company' => $this->resource->company->name,
+            'type' => $this->resource->mime_type,
+            'extension' => $this->resource->extension,
         ];
     }
 }

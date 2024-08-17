@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../components-style/PopupForm.css";
 import OutsideAlerter from "./OutsideAlerter";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function PopupFormEdit({ setPopup, file, setFile }) {
   const config = {
@@ -10,6 +11,25 @@ function PopupFormEdit({ setPopup, file, setFile }) {
       Authorization: `Bearer ${window.sessionStorage.getItem("authToken")}`,
     },
   };
+
+  function notification() {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      width: "fit-content",
+      showConfirmButton: false,
+      timer: 3500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: file.name + " is edited successfully!",
+    });
+  }
 
   function handleCancel(e) {
     e.preventDefault();
@@ -25,6 +45,8 @@ function PopupFormEdit({ setPopup, file, setFile }) {
 
         console.log(res.data);
         setFile(res.data);
+        setPopup(false);
+        notification();
       })
       .catch((e) => {
         console.log(e);

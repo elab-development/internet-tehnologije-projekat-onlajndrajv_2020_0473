@@ -12,16 +12,36 @@ function File({ file, deletedFile }) {
   const [fileState, setFileState] = useState(file);
   const [popup, setPopup] = useState(false);
 
-  function handleFileView() {
-    console.log("Funkcija pogledaj: " + fileState.name);
-  }
-
   function handleFileEdit() {
     setPopup(true);
   }
 
   function handleFileDownload() {
-    console.log("Funkcija skini: " + fileState.name);
+    axios
+      .get("api/files/" + fileState.id, {
+        responseType: "blob",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${window.sessionStorage.getItem("authToken")}`,
+        },
+      })
+      .then((res) => {
+        console.log("Uspesno pozvana show fja: " + fileState.name + " !");
+        console.log(res);
+
+        const blob = new Blob([res.data], {
+          type: res.data.type,
+        });
+
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileState.name;
+        link.click();
+        // window.URL.revokeObjectURL(link.href);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   function notification() {
@@ -54,15 +74,13 @@ function File({ file, deletedFile }) {
       confirmButtonText: "Yes, delete!",
     }).then((result) => {
       if (result.isConfirmed) {
+        fileDeletion();
+
         Swal.fire({
           title: "Deleted!",
           text: fileState.name + " is successfully deleted!",
           icon: "success",
         });
-
-        fileDeletion();
-
-        notification();
       }
     });
   }
@@ -86,6 +104,14 @@ function File({ file, deletedFile }) {
       });
   }
 
+  const tryRequireImage = (ext) => {
+    try {
+      return require("../images/" + ext + ".png");
+    } catch (err) {
+      return require("../images/unknown.png");
+    }
+  };
+
   return (
     <>
       {popup && (
@@ -97,17 +123,25 @@ function File({ file, deletedFile }) {
       )}
       <div className="file-wrapper">
         <div className="file-body">
-          <button className="btn" onClick={handleFileView}>
+          <img
+            className="image-icon"
+            src={tryRequireImage(file.extension)}
+            alt="Error with photo"
+          />
+          {/* <button className="btn" onClick={handleFileView}>
             <IoEyeSharp />
+          </button> */}
+          <button className="btn btn-edit" onClick={handleFileEdit}>
+            <MdModeEdit className="btn-icon" />
+            <p>Edit</p>
           </button>
-          <button className="btn" onClick={handleFileEdit}>
-            <MdModeEdit />
+          <button className="btn btn-down" onClick={handleFileDownload}>
+            <FaDownload className="btn-icon" />
+            <p>Download</p>
           </button>
-          <button className="btn" onClick={handleFileDownload}>
-            <FaDownload />
-          </button>
-          <button className="btn" onClick={handleFileDeleteClick}>
-            <RiDeleteBinFill />
+          <button className="btn btn-del" onClick={handleFileDeleteClick}>
+            <RiDeleteBinFill className="btn-icon" />
+            <p>Delete</p>
           </button>
         </div>
         <h6 className="file-title">{fileState.name}</h6>
