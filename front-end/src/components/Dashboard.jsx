@@ -7,11 +7,17 @@ import EmployeesPage from "./EmployeesPage";
 
 const Dashboard = ({
   loading,
+  setFilesLoading,
+  filesLoading,
+  currentFolder,
+  setCurrentFolder,
   user,
   files,
+  folders,
   employees,
   users,
   setFiles,
+  setFolders,
   setEmployees,
   setUsers,
   handleAppendEmployee,
@@ -67,9 +73,15 @@ const Dashboard = ({
           )}
           {user && view.name == "files" && (
             <AllFiles
+              setFilesLoading={setFilesLoading}
+              filesLoading={filesLoading}
+              currentFolder={currentFolder}
+              setCurrentFolder={setCurrentFolder}
               company={user.company}
               files={files}
+              folders={folders}
               setFiles={setFiles}
+              setFolders={setFolders}
             />
           )}
           {user && view.name == "employees" && (

@@ -18,11 +18,18 @@ function App() {
   };
 
   const [logged, setLogged] = useState();
+  const [currentFolder, setCurrentFolder] = useState({
+    name: "",
+    path: "",
+    parent_folder: null,
+  });
 
   const [loading, setLoading] = useState(true);
+  const [filesLoading, setFilesLoading] = useState(false);
   const [user, setUser] = useState();
 
   const [files, setFiles] = useState();
+  const [folders, setFolders] = useState();
   const [employees, setEmployees] = useState();
   const [users, setUsers] = useState();
 
@@ -30,11 +37,12 @@ function App() {
     axios
       .get("api/userdetail", config)
       .then((res) => {
-        console.log("Povucen korisnik preko rute api/userdetail");
-        console.log(res.data);
+        console.log("Zahtev: Povucen korisnik preko rute api/userdetail");
+        console.log("Rezultat: " + res);
 
         setUser(res.data);
-        getFilesForCompany(res.data.company.id);
+        getFilesForPath(res.data.company.id, "");
+        getFoldersForPath(res.data.company.id, "");
         getEmployeesFromCompany(res.data.company.id);
         getNotEmployedUsers();
       })
@@ -43,13 +51,48 @@ function App() {
       });
   }
 
-  function getFilesForCompany(id) {
+  function getFilesForPath(company_id, path_prop) {
     axios
-      .get("api/companies/" + id + "/files", config)
+      .get("api/companies/" + company_id + "/files", {
+        headers: {
+          Authorization: `Bearer ${window.sessionStorage.getItem("authToken")}`,
+        },
+        params: {
+          path: path_prop,
+        },
+      })
       .then((res) => {
-        console.log(res.data.files);
+        console.log(
+          "Uspesan zahtev za uzimanje svih fajlova za putanju: " + path_prop
+        );
+        console.log("Rezultat: " + res);
         setFiles(res.data.files);
+
+        getFoldersForPath(company_id, path_prop);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  function getFoldersForPath(company_id, path_prop) {
+    axios
+      .get("api/folders/" + company_id, {
+        headers: {
+          Authorization: `Bearer ${window.sessionStorage.getItem("authToken")}`,
+        },
+        params: {
+          path: path_prop,
+        },
+      })
+      .then((res) => {
+        console.log(
+          "Uspesan zahtev za uzimanje svih foldera za putanju: " + path_prop
+        );
+        console.log("Rezultat: " + res);
+        setFolders(res.data);
         setLoading(false);
+        setFilesLoading(false);
       })
       .catch((e) => {
         console.log(e);
@@ -60,7 +103,8 @@ function App() {
     axios
       .get("api/companies/" + id + "/employees", config)
       .then((res) => {
-        console.log(res.data.employees);
+        console.log("Uspesan zahtev za uzimanje zaposlenih");
+        console.log("Rezultat: " + res);
         setEmployees(res.data.employees);
       })
       .catch((e) => {
@@ -72,7 +116,8 @@ function App() {
     axios
       .get("api/users", config)
       .then((res) => {
-        console.log(res.data);
+        console.log("Uspesan zahtev za uzimanje nezaposlenih");
+        console.log("Rezultat: " + res);
         setUsers(res.data);
       })
       .catch((e) => {
@@ -89,8 +134,17 @@ function App() {
   }
 
   useEffect(() => {
-      handleUserDetail();
+    handleUserDetail();
+    console.log("Rendanje effect logged");
   }, [logged]);
+  
+  useEffect(() => {
+    if (user) {
+      getFilesForPath(user.company.id, currentFolder.path);
+      getFoldersForPath(user.company.id, currentFolder.path);
+      console.log("Rendanje effect folder");
+    }
+  }, [currentFolder]);
 
   return (
     <BrowserRouter className="app">
@@ -102,11 +156,17 @@ function App() {
           element={
             <Dashboard
               loading={loading}
+              setFilesLoading={setFilesLoading}
+              filesLoading={filesLoading}
+              currentFolder={currentFolder}
+              setCurrentFolder={setCurrentFolder}
               user={user}
               files={files}
+              folders={folders}
               employees={employees}
               users={users}
               setFiles={setFiles}
+              setFolders={setFolders}
               setEmployees={setEmployees}
               setUsers={setUsers}
               handleAppendEmployee={handleAppendEmployee}

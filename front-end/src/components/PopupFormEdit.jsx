@@ -41,9 +41,9 @@ function PopupFormEdit({ setPopup, file, setFile }) {
     axios
       .patch("api/files/" + file.id, data, config)
       .then((res) => {
-        console.log("Uspesna izmena fajla: " + file.name + " !");
+        console.log("Uspesan zahtev za izmenu fajla: " + file.name + " !");
+        console.log("Rezultat: " + res);
 
-        console.log(res.data);
         setFile(res.data);
         setPopup(false);
         notification();

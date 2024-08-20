@@ -1,7 +1,8 @@
 .title-button-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
+  margin-left: 15px;
 }
 
 .all-files {
@@ -13,4 +14,16 @@
   text-align: center;
   margin: 10px 20px;
   color: #2f4858;
+}
+
+.btn-back:disabled {
+  background-color: #bfbfbf;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+.btn-back:disabled:hover {
+  background-color: #bfbfbf;
+  color: #ffffff;
+  cursor: not-allowed;
 }

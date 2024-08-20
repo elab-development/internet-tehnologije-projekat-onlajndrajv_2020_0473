@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Models\File;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FileResource;
@@ -15,14 +16,28 @@ class FileController extends Controller
     {
         $file = File::find($id);
         return Storage::download(
-            $file->path . "/" . $id . "." . $file->extension
+            $file->company_id .
+                "/" .
+                $file->path .
+                "/" .
+                $id .
+                "." .
+                $file->extension
         );
     }
 
     public function destroy($id)
     {
         $file = File::find($id);
-        Storage::delete($file->path . "/" . $id . "." . $file->extension);
+        Storage::delete(
+            $file->company_id .
+                "/" .
+                $file->path .
+                "/" .
+                $id .
+                "." .
+                $file->extension
+        );
         $file->delete();
 
         return new JsonResponse(
@@ -44,7 +59,19 @@ class FileController extends Controller
             return response()->json('Data not found', 404);
         }
 
+        if ($file->path != $request->path) {
+            $name_in_db = $file->id . '.' . $file->extension;
+            $old_path =
+                $file->company_id . '/' . $file->path . '/' . $name_in_db;
+            $new_path =
+                $file->company_id . '/' . $request->path . '/' . $name_in_db;
+
+            Storage::move($old_path, $new_path);
+        }
+
         $file->fill($request->all());
+        $file->path = Helper::normalizePath($request->path);
+
         $file->save();
 
         return $file;

@@ -5,6 +5,7 @@ use App\Http\Controllers\CompanyEmployeeController;
 use App\Http\Controllers\CompanyFileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\FolderController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserCollection;
 use Illuminate\Http\Request;
@@ -19,11 +20,16 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
 });
 
+//pomocno za mpostmana da ne bih autentifikovao svaki put
 Route::resource('files', FileController::class)->only([
     'update',
     'destroy',
     'show',
 ]);
+
+//i ovu ubaciti kasnije u middleware
+Route::get('folders/{company}', [FolderController::class, 'index']);
+Route::post('folders/{company}', [FolderController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);

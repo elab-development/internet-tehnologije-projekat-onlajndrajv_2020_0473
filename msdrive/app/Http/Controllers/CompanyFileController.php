@@ -14,14 +14,22 @@ use Illuminate\Validation\ValidationException;
 
 class CompanyFileController extends Controller
 {
-
-
-    public function index($company_id)
+    public function index($company_id, Request $request)
     {
-        $files = File::get()->where('company_id', $company_id);
+        if (is_null($request->path)) {
+            $files = File::where('company_id', $company_id)
+                ->where('path', "")
+                ->get();
+        } else {
+            $files = File::where('company_id', $company_id)
+                ->where('path', $request->path)
+                ->get();
+        }
+
         if (is_null($files)) {
             return response()->json('Data not found', 404);
         }
+
         return new FileCollection($files);
     }
 
@@ -44,6 +52,7 @@ class CompanyFileController extends Controller
             $file->name = $name_with_extension;
             $file->description = $request->description;
             $file->extension = $request->extension;
+            $file->path = Helper::normalizePath($request->path);
 
             if ($request->type == "" || $request->type == null) {
                 $file->mime_type = "unknown";
@@ -51,22 +60,16 @@ class CompanyFileController extends Controller
                 $file->mime_type = $request->type;
             }
 
-            $file->path = "";
-
             $file->save();
-            
-            $path = Storage::disk('local')->putFileAs(
+
+            Storage::disk('local')->putFileAs(
                 $full_path,
                 $request->data,
                 $file->id . "." . $request->extension
             );
-            
-            $file->path = Helper::removeContentAfterLastSlash(
-                Helper::normalizePath($path)
-            );
 
             $file->save();
-            
+
             return new FileResource($file);
         } catch (ValidationException $e) {
             return new JsonResponse(

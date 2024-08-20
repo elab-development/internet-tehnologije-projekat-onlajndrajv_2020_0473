@@ -26,8 +26,8 @@ function File({ file, deletedFile }) {
         },
       })
       .then((res) => {
-        console.log("Uspesno pozvana show fja: " + fileState.name + " !");
-        console.log(res);
+        console.log("File download zahtev uspesno odradjen!");
+        console.log(" Rezultat: " + res);
 
         const blob = new Blob([res.data], {
           type: res.data.type,
@@ -37,7 +37,6 @@ function File({ file, deletedFile }) {
         link.href = window.URL.createObjectURL(blob);
         link.download = fileState.name;
         link.click();
-        // window.URL.revokeObjectURL(link.href);
       })
       .catch((e) => {
         console.log(e);
@@ -94,8 +93,10 @@ function File({ file, deletedFile }) {
         },
       })
       .then((res) => {
-        console.log("Uspesno brisanje fajla: " + fileState.name + " !");
-        console.log(res);
+        console.log(
+          "Uspesan zahtev za brisanje fajla: " + fileState.name + " !"
+        );
+        console.log("Rezultat: " + res);
 
         deletedFile(fileState);
       })

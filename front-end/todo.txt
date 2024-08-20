@@ -1,5 +1,8 @@
-path izmena
 folderi
+
+paginacija
+
+proveriti uslove na elabu
 
 pri dodavanju employee zatrazi role
 

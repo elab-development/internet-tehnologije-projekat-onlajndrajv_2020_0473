@@ -1,0 +1,115 @@
+.folder-wrapper {
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.folder-body {
+  width: 84px;
+  height: 72px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
+
+  transition: all 0.1s;
+}
+
+.folder-body:hover {
+  background-color: #33648a;
+  background-color: #33648a9d;
+  transform: scale(1.07);
+  cursor: pointer;
+}
+
+.folder-title {
+  margin: 5px;
+  font-size: 12px;
+  color: #2f4858;
+}
+
+.btn {
+  margin: 0;
+
+  appearance: button;
+  backface-visibility: hidden;
+  background-color: #33658a;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset,
+    rgba(50, 50, 93, 0.1) 0 2px 5px 0, rgba(0, 0, 0, 0.07) 0 1px 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: all 0.3s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.file-body .btn {
+  display: none;
+  align-items: center;
+  flex-direction: row;
+  width: 84px;
+  height: 22px;
+  border-radius: 4px;
+  gap: 4px;
+}
+
+.file-body p {
+  padding-top: 2px;
+  font-size: 12px;
+}
+
+.file-body:hover .btn {
+  display: flex;
+}
+
+.btn-icon svg {
+  color: mintcream;
+
+  height: 10px;
+  width: 10px;
+}
+
+.folder-icon {
+  display: block;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.file-body:hover .image-icon {
+  display: none;
+}
+
+.btn.btn-edit:hover {
+  background: peru;
+}
+
+.btn.btn-del:hover {
+  background: brown;
+}
+
+.btn:hover {
+  background: #468af0;
+}
+
+.btn:active {
+  background: #468af0;
+  top: 2px;
+}
+
+.btn:disabled {
+  cursor: default;
+}
