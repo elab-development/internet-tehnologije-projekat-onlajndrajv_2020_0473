@@ -20,17 +20,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
 });
 
-//pomocno za mpostmana da ne bih autentifikovao svaki put
-Route::resource('files', FileController::class)->only([
-    'update',
-    'destroy',
-    'show',
-]);
-
-//i ovu ubaciti kasnije u middleware
-Route::get('folders/{company}', [FolderController::class, 'index']);
-Route::post('folders/{company}', [FolderController::class, 'store']);
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
 
@@ -39,11 +28,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('userdetail', 'userDetails');
     });
 
-    // Route::resource('files', FileController::class)->only([
-    //     'show',
-    //     'update',
-    //     'destroy',
-    // ]);
+    Route::resource('files', FileController::class)->only([
+        'show',
+        'update',
+        'destroy',
+    ]);
+
+    Route::get('folders/{company}', [FolderController::class, 'index']);
+    Route::post('folders/{company}', [FolderController::class, 'store']);
+
     Route::resource('companies.files', CompanyFileController::class)->only([
         'index',
         'store',

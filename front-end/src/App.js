@@ -9,6 +9,7 @@ import Dashboard from "./components/Dashboard";
 import EmployeesPage from "./components/EmployeesPage";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import UserPage from "./components/UserPage";
 
 function App() {
   const config = {
@@ -137,7 +138,7 @@ function App() {
     handleUserDetail();
     console.log("Rendanje effect logged");
   }, [logged]);
-  
+
   useEffect(() => {
     if (user) {
       getFilesForPath(user.company.id, currentFolder.path);
@@ -180,7 +181,7 @@ function App() {
           element={
             <>
               <NavBar />
-              <h1>Again h1</h1>
+              <UserPage user={user} />
             </>
           }
         />

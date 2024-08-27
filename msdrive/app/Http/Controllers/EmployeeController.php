@@ -10,16 +10,20 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class   EmployeeController extends Controller
+class EmployeeController extends Controller
 {
     public function destroy($id)
     {
         $employee = Employee::find($id);
         $employee->delete();
 
-        return new JsonResponse([
-            'message' => 'Employee with id: ' . $id . ' deleted successfully!',
-        ], 200);
+        return new JsonResponse(
+            [
+                'message' =>
+                    'Employee with id: ' . $id . ' deleted successfully!',
+            ],
+            200
+        );
     }
 
     public function store(Request $request)
@@ -38,10 +42,13 @@ class   EmployeeController extends Controller
 
             return new EmployeeResource($employee);
         } catch (ValidationException $e) {
-            return new JsonResponse([
-                'message' => 'Validation failed',
-                'errors' => $e->errors(),
-            ], 422);
+            return new JsonResponse(
+                [
+                    'message' => 'Validation failed',
+                    'errors' => $e->errors(),
+                ],
+                422
+            );
         }
     }
 }
