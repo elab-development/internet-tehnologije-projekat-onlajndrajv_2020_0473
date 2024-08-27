@@ -56,19 +56,26 @@ const Dashboard = ({
           {user && (
             <div className="dashboard-main">
               <div className="dashboard-info info-company">
-                <h4>Company: {user.company.name}</h4>
-                <h4>Description: {user.company.description}</h4>
-                <h4>Owner: {user.company.owner.name}</h4>
+                {user.company && (
+                  <>
+                    <h4>Company: {user.company.name}</h4>
+                    <h4>Description: {user.company.description}</h4>
+                    <h4>Owner: {user.company.owner.name}</h4>
+                  </>
+                )}
+                {!user.company && <h4>User is not in any company!</h4>}
               </div>
 
-              <div className="dashboard-info employees-info">
-                <button
-                  className="btn btn-view-employees"
-                  onClick={handleClick}
-                >
-                  {view.text}
-                </button>
-              </div>
+              {user.company && (
+                <div className="dashboard-info employees-info">
+                  <button
+                    className="btn btn-view-employees"
+                    onClick={handleClick}
+                  >
+                    {view.text}
+                  </button>
+                </div>
+              )}
             </div>
           )}
           {user && view.name == "files" && (

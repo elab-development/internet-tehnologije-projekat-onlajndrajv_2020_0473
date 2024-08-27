@@ -94,7 +94,7 @@ const RegisterPage = () => {
             "authToken",
             res.data.authorisation.token
           );
-          navigate("/");
+          navigate("/dashboard");
         }
       })
       .catch((e) => {

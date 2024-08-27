@@ -39,13 +39,17 @@ function App() {
       .get("api/userdetail", config)
       .then((res) => {
         console.log("Zahtev: Povucen korisnik preko rute api/userdetail");
-        console.log("Rezultat: " + res);
+        console.log("Rezultat: ");
+        console.log(res);
 
         setUser(res.data);
-        getFilesForPath(res.data.company.id, "");
-        getFoldersForPath(res.data.company.id, "");
-        getEmployeesFromCompany(res.data.company.id);
-        getNotEmployedUsers();
+        if (res.data.employed) {
+          getFilesForPath(res.data.company.id, "");
+          getFoldersForPath(res.data.company.id, "");
+          getEmployeesFromCompany(res.data.company.id);
+          getNotEmployedUsers();
+        }
+        setLoading(false)
       })
       .catch((e) => {
         console.log(e);
