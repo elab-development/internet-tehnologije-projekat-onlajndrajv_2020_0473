@@ -6,9 +6,11 @@ const Folder = ({
   setFilesLoading,
   currentFolder,
   setCurrentFolder,
+  setFocusedFolder,
   folder,
 }) => {
   function handleClick() {
+    setFocusedFolder(folder);
     setStyle({ outline: "3px solid #33648a", backgroundColor: "#4f89b69d" });
   }
 
@@ -17,6 +19,7 @@ const Folder = ({
       outline: "3px solid transparent",
       backgroundColor: "transparent",
     });
+    setFocusedFolder(null);
   }
 
   const [style, setStyle] = useState({
@@ -27,11 +30,12 @@ const Folder = ({
   function handleDoubleClick() {
     setFilesLoading(true);
     setCurrentFolder(folder);
+    setFocusedFolder(null);
   }
 
   return (
     <div className="folder-wrapper">
-      <OutsideAlerter setPopup={turnOffBorder}>
+      <OutsideAlerter setPopup={turnOffBorder} setFocused={setFocusedFolder}>
         <div
           className="folder-body"
           onClick={handleClick}

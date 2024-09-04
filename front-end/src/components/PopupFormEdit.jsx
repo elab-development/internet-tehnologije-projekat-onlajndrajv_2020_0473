@@ -3,6 +3,7 @@ import "../components-style/PopupForm.css";
 import OutsideAlerter from "./OutsideAlerter";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Button from "./Button";
 
 function PopupFormEdit({ setPopup, file, setFile }) {
   const config = {
@@ -31,12 +32,12 @@ function PopupFormEdit({ setPopup, file, setFile }) {
     });
   }
 
-  function handleCancel(e) {
+  function handleCancelClick(e) {
     e.preventDefault();
     setPopup(false);
   }
 
-  function handleConfirm(e) {
+  function handleConfirmClick(e) {
     e.preventDefault();
     axios
       .patch("api/files/" + file.id, data, config)
@@ -93,24 +94,13 @@ function PopupFormEdit({ setPopup, file, setFile }) {
                 onInput={handleInput}
               ></textarea>
             </label>
-            <label>
-              Path:
-              <input
-                className="input"
-                name="path"
-                id="path"
-                type="text"
-                defaultValue={file.path}
-                onInput={handleInput}
-              />
-            </label>
             <div className="buttons-wrapper">
-              <button className="button-edit" onClick={handleConfirm}>
+              <Button onClick={handleConfirmClick} type="confirm">
                 Confirm change
-              </button>
-              <button className="button-close" onClick={handleCancel}>
+              </Button>
+              <Button onClick={handleCancelClick} type="cancel">
                 Cancel
-              </button>
+              </Button>
             </div>
           </form>
         </div>

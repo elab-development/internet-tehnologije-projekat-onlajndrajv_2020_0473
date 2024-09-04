@@ -13,11 +13,21 @@ use Illuminate\Validation\ValidationException;
 
 class CompanyEmployeeController extends Controller
 {
-    public function index($company_id)
+    public function index($company_id, Request $request)
     {
-        $employees = Employee::all()->where('company_id', $company_id);
-        return new EmployeeCollection($employees);
+        $page = $request->page;
+        $pageCount = $request->pageCount;
+
+        $employees = Employee::where('company_id', $company_id)
+            ->skip(($page - 1) * $pageCount)
+            ->take($pageCount)
+            ->get();
+
+        $count = Employee::where('company_id', $company_id)->count();
+
+        return new JsonResponse([
+            'employees' => new EmployeeCollection($employees),
+            'count' => $count,
+        ]);
     }
-
-
 }

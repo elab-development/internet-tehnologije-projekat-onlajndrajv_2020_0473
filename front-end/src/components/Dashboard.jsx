@@ -1,34 +1,133 @@
 import React from "react";
 import NavBar from "./NavBar";
 import AllFiles from "./AllFiles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../components-style/Dashboard.css";
 import EmployeesPage from "./EmployeesPage";
+
+import useDrivePicker from "react-google-drive-picker";
+import Loading from "./Loading";
+import UserInfo from "./UserInfo";
+import Button from "./Button";
+import EmployeesAndUsersPage from "./EmployeesAndUsersPage";
 
 const Dashboard = ({
   loading,
   setFilesLoading,
   filesLoading,
+  foldersLoading,
   currentFolder,
   setCurrentFolder,
   user,
   files,
   folders,
-  employees,
-  users,
   setFiles,
   setFolders,
-  setEmployees,
-  setUsers,
-  handleAppendEmployee,
-  handleAppendUser,
 }) => {
+  // API
+  const [openPicker, authResponse] = useDrivePicker();
+
+  const handleOpenPicker = () => {
+    let token = window.sessionStorage.getItem("accessToken");
+    const expirationTime = window.sessionStorage.getItem("tokenExpirationTime");
+
+    if (!token || new Date().getTime() > expirationTime) {
+      token = null;
+    }
+
+    console.log(authResponse)
+
+    try {
+      openPicker({
+        clientId: process.env.REACT_APP_CLIENT_ID,
+        developerKey: process.env.REACT_APP_DEVELOPER_KEY,
+        token: token,
+        viewId: "DOCS",
+        showUploadView: true,
+        showUploadFolder: true,
+        supportDrives: true,
+        multiselect: true,
+        showUploadFolders: true,
+        callbackFunction: (data) => {
+          if (authResponse) {
+            const oldToken = window.sessionStorage.getItem("accessToken");
+            const newToken = authResponse.access_token;
+
+            const expires = window.sessionStorage.getItem(
+              "tokenExpirationTime"
+            );
+
+            if (oldToken != newToken || !expires) {
+              window.sessionStorage.setItem(
+                "accessToken",
+                authResponse.access_token
+              );
+
+              const expirationTime =
+                new Date().getTime() + authResponse.expires_in * 1000;
+
+              window.sessionStorage.setItem(
+                "tokenExpirationTime",
+                expirationTime
+              );
+
+              console.log("Token changed. New expiration time set.");
+            }
+          }
+          if (data.action === "cancel") {
+            console.log("User clicked cancel/close button");
+          }
+          if (data.action === "picked") {
+            console.log("User clicked select button");
+
+            const selectedData = data.docs;
+
+            if (!selectedData) return;
+
+            for (let i = 0; i < selectedData.length; i++) {
+              if (!selectedData[i].isNew) {
+                window.open(selectedData[i].url, "_blank");
+              } else {
+                handleSetPermissions(selectedData[i].id);
+              }
+            }
+          }
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleSetPermissions = (fileId) => {
+    const accessToken = window.sessionStorage.getItem("accessToken");
+
+    fetch(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        role: "reader", // "reader" za pregled, "writer" za uređivanje
+        type: "anyone", // "anyone" za javno, "user" za specifične korisnike
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Permissions set successfully:", data);
+      })
+      .catch((error) => {
+        console.error("Error setting permissions:", error);
+      });
+  };
+  // --------------
   const [view, setView] = useState({
     name: "files",
     text: "Show all employees",
   });
 
-  function handleClick() {
+  function handleChangeView() {
     if (view.name == "files") {
       setView({
         name: "employees",
@@ -44,36 +143,19 @@ const Dashboard = ({
 
   return (
     <>
-      {loading && (
-        <div className="loading-wrapper">
-          <div className="loading"></div>
-        </div>
-      )}
+      {loading && <Loading type={"screen"} />}
 
       {!loading && (
         <div>
           <NavBar />
           {user && (
             <div className="dashboard-main">
-              <div className="dashboard-info info-company">
-                {user.company && (
-                  <>
-                    <h4>Company: {user.company.name}</h4>
-                    <h4>Description: {user.company.description}</h4>
-                    <h4>Owner: {user.company.owner.name}</h4>
-                  </>
-                )}
-                {!user.company && <h4>User is not in any company!</h4>}
-              </div>
+              <UserInfo user={user} />
 
               {user.company && (
                 <div className="dashboard-info employees-info">
-                  <button
-                    className="btn btn-view-employees"
-                    onClick={handleClick}
-                  >
-                    {view.text}
-                  </button>
+                  <Button onClick={handleChangeView}>{view.text}</Button>
+                  <Button onClick={handleOpenPicker}>Show cloud files</Button>
                 </div>
               )}
             </div>
@@ -82,6 +164,7 @@ const Dashboard = ({
             <AllFiles
               setFilesLoading={setFilesLoading}
               filesLoading={filesLoading}
+              foldersLoading={foldersLoading}
               currentFolder={currentFolder}
               setCurrentFolder={setCurrentFolder}
               company={user.company}
@@ -92,15 +175,7 @@ const Dashboard = ({
             />
           )}
           {user && view.name == "employees" && (
-            <EmployeesPage
-              company={user.company}
-              employees={employees}
-              users={users}
-              setEmployees={setEmployees}
-              setUsers={setUsers}
-              handleAppendEmployee={handleAppendEmployee}
-              handleAppendUser={handleAppendUser}
-            />
+            <EmployeesAndUsersPage company={user.company} />
           )}
         </div>
       )}

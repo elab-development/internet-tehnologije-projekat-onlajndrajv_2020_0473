@@ -45,12 +45,10 @@ const RegisterPage = () => {
     },
   });
 
-  // POPUNJAVANJE OBJEKTA USER IZ FORME
   function handleInput(e) {
     let newUserData = userData;
     newUserData[e.target.name] = e.target.value;
     setUserData(newUserData);
-    // console.log(userData);
   }
 
   function handleErrorMessages(res) {

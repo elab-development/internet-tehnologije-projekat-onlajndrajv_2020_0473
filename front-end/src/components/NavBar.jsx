@@ -22,6 +22,7 @@ function NavBar() {
         console.log(e);
       });
     window.sessionStorage.removeItem("authToken");
+    window.sessionStorage.removeItem("accessToken");
   }
 
   return (

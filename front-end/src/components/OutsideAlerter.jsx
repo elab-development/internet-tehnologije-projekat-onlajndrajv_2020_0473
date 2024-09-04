@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 /**
  * Hook that alerts clicks outside of the passed ref
  */
-function useOutsideAlerter(ref, setPopup) {
+function useOutsideAlerter(ref, setPopup, setFocused) {
   useEffect(() => {
     /**
      * Alert if clicked on outside of element
@@ -12,7 +12,10 @@ function useOutsideAlerter(ref, setPopup) {
     function handleClickOutside(event) {
       if (ref.current && !ref.current.contains(event.target)) {
         //Action when clicked outside
-        setPopup(false);
+        if (!event.target.classList.contains("delete-folder")) {
+          setPopup(false);
+          setFocused(null);
+        }
       }
     }
     // Bind the event listener
@@ -29,7 +32,7 @@ function useOutsideAlerter(ref, setPopup) {
  */
 function OutsideAlerter(props) {
   const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef, props.setPopup);
+  useOutsideAlerter(wrapperRef, props.setPopup, props.setFocused);
 
   return <div ref={wrapperRef}>{props.children}</div>;
 }

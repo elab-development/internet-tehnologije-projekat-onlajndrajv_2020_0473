@@ -3,6 +3,7 @@ import "../components-style/PopupForm.css";
 import OutsideAlerter from "./OutsideAlerter";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Button from "./Button";
 
 function PopupFormAdd({
   currentFolder,
@@ -46,7 +47,7 @@ function PopupFormAdd({
     });
   }
 
-  function handleCancel(e) {
+  function handleCancelClick(e) {
     e.preventDefault();
     setPopup(false);
   }
@@ -100,19 +101,19 @@ function PopupFormAdd({
     e.preventDefault();
 
     axios
-      .post("api/folders/" + company_id, {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${window.sessionStorage.getItem("authToken")}`,
+      .post(
+        "api/folders/" + company_id,
+        {
+          name: folderName,
+          path: currentFolder.path,
+          parent_path: currentFolder.parent_path,
+          current_folder_name: currentFolder.name,
         },
-        name: folderName,
-        path: currentFolder.path,
-        parent_path: currentFolder.parent_path,
-        current_folder_name: currentFolder.name,
-      })
+        config
+      )
       .then((res) => {
         console.log("Uspesan zahtev za dodavanje foldera!");
-        console.log("Rezultat: "+res);
+        console.log("Rezultat: " + res);
         addToFolders(res.data);
         setLoading(false);
         setPopup(false);
@@ -147,16 +148,16 @@ function PopupFormAdd({
                   </div>
                 )}
                 <div className="buttons-wrapper">
-                  <button
-                    className="button-edit"
+                  <Button
                     onClick={handleAddFolderClick}
                     disabled={loading ? true : false}
+                    type="confirm"
                   >
                     Confirm addition
-                  </button>
-                  <button className="button-close" onClick={handleCancel}>
+                  </Button>
+                  <Button onClick={handleCancelClick} type="cancel">
                     Cancel
-                  </button>
+                  </Button>
                 </div>
               </form>
             </div>
@@ -202,16 +203,17 @@ function PopupFormAdd({
                   </div>
                 )}
                 <div className="buttons-wrapper">
-                  <button
-                    className="button-edit"
+                  <Button
                     onClick={handleAddFileClick}
                     disabled={loading ? true : false}
+                    type="confirm"
                   >
                     Confirm addition
-                  </button>
-                  <button className="button-close" onClick={handleCancel}>
+                  </Button>
+
+                  <Button onClick={handleCancelClick} type="cancel">
                     Cancel
-                  </button>
+                  </Button>
                 </div>
               </form>
             </div>

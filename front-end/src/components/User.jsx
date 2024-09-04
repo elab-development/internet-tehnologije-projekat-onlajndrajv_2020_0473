@@ -2,8 +2,9 @@ import React from "react";
 import "../components-style/User.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Button from "./Button";
 
-const User = ({ user, company, all, set, appendToEmployees }) => {
+const User = ({ user, company, setUsers }) => {
   const config = {
     headers: {
       Accept: "application/json",
@@ -16,18 +17,15 @@ const User = ({ user, company, all, set, appendToEmployees }) => {
     user_id: user.id,
   };
 
-  function handleEmploy() {
+  function handleEmployClick() {
     axios
       .post("api/employees", data, config)
       .then((res) => {
         console.log(res.data.employee);
 
-        appendToEmployees(res.data.employee);
+        setUsers((prev) => prev.filter((item) => item.id !== user.id));
 
-        const arr = all.filter((item) => item.id !== user.id);
-        set(arr);
-
-        notification()
+        notification();
       })
       .catch((e) => {
         console.log(e);
@@ -57,9 +55,9 @@ const User = ({ user, company, all, set, appendToEmployees }) => {
     <div className="employee-wrapper">
       <h5>Name: {user.name}</h5>
       <h5>E-mail: {user.email}</h5>
-      <button className="btn btn-employ" onClick={handleEmploy}>
+      <Button onClick={handleEmployClick} type="confirm">
         Employ
-      </button>
+      </Button>
     </div>
   );
 };

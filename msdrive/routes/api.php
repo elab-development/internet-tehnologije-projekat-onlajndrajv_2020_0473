@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('folders/{company}', [FolderController::class, 'index']);
     Route::post('folders/{company}', [FolderController::class, 'store']);
+    Route::delete('folders/{company}', [FolderController::class, 'destroy']);
 
     Route::resource('companies.files', CompanyFileController::class)->only([
         'index',

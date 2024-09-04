@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../components-style/File.css";
+import "../App.css";
 import { IoEyeSharp } from "react-icons/io5";
 import { FaDownload } from "react-icons/fa";
 import { RiDeleteBinFill } from "react-icons/ri";
@@ -7,6 +7,7 @@ import { MdModeEdit } from "react-icons/md";
 import axios from "axios";
 import Swal from "sweetalert2";
 import PopupFormEdit from "./PopupFormEdit";
+import Button from "./Button";
 
 function File({ file, deletedFile }) {
   const [fileState, setFileState] = useState(file);
@@ -129,21 +130,21 @@ function File({ file, deletedFile }) {
             src={tryRequireImage(file.extension)}
             alt="Error with photo"
           />
-          {/* <button className="btn" onClick={handleFileView}>
-            <IoEyeSharp />
-          </button> */}
-          <button className="btn btn-edit" onClick={handleFileEdit}>
+
+          <Button onClick={handleFileEdit}>
             <MdModeEdit className="btn-icon" />
             <p>Edit</p>
-          </button>
-          <button className="btn btn-down" onClick={handleFileDownload}>
+          </Button>
+
+          <Button onClick={handleFileDownload}>
             <FaDownload className="btn-icon" />
             <p>Download</p>
-          </button>
-          <button className="btn btn-del" onClick={handleFileDeleteClick}>
+          </Button>
+
+          <Button onClick={handleFileDeleteClick} type="delete">
             <RiDeleteBinFill className="btn-icon" />
             <p>Delete</p>
-          </button>
+          </Button>
         </div>
         <h6 className="file-title">{fileState.name}</h6>
       </div>

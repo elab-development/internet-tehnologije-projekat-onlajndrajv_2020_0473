@@ -1,10 +1,6 @@
-folderi
+paginacija-oznacena trenutna stranica u meniju
 
-paginacija
-
-proveriti uslove na elabu
-
-pri dodavanju employee zatrazi role
+u frontu greske kada se desi middleware greska
 
 obratiti paznju na ogranicenja u bazi:
     - 1 user moze biti 1 employee
@@ -15,5 +11,3 @@ napraviti nepostojece rute nedostupnim
 sve vezano za fajlove->koristiti uloge
 izbacivanje gresaka kod employee brisanja
 about user nesto staviti na stranicu
-
-proveriti javni API da se ubaci, ako ne moze onedrive, neki drugi...... 

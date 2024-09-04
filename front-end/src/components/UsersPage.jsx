@@ -1,23 +1,22 @@
-import React from "react";
-import Employee from "./Employee";
-import { useState, useEffect } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Loading from "./Loading";
+import User from "./User";
 import PaginationBar from "./PaginationBar";
 
 const itemsPerPage = 10;
 
-const EmployeesPage = ({ company }) => {
-  const [employees, setEmployees] = useState(null);
+const UsersPage = ({ company }) => {
+  const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalObjects, setTotalObjects] = useState(0);
 
-  function getEmployeesFromCompany(id) {
+  function getNotEmployedUsers() {
     setLoading(true);
     axios
-      .get("api/companies/" + id + "/employees", {
+      .get("api/users", {
         headers: {
           Authorization: `Bearer ${window.sessionStorage.getItem("authToken")}`,
         },
@@ -27,22 +26,23 @@ const EmployeesPage = ({ company }) => {
         },
       })
       .then((res) => {
-        setEmployees(res.data.employees);
+        setUsers(res.data.users);
         setLoading(false);
 
-        console.log("Uspesan zahtev za uzimanje zaposlenih");
+        console.log("Uspesan zahtev za uzimanje nezaposlenih");
         console.log("Rezultat: ");
         console.log(res);
 
         setTotalObjects(res.data.count);
       })
       .catch((e) => {
+        setLoading(false);
         console.log(e);
       });
   }
 
   useEffect(() => {
-    getEmployeesFromCompany(company.id);
+    getNotEmployedUsers();
   }, [currentPage]);
 
   return (
@@ -50,12 +50,13 @@ const EmployeesPage = ({ company }) => {
       {loading ? (
         <Loading type="segment" />
       ) : (
-        employees &&
-        employees.map((employee) => (
-          <Employee
-            employee={employee}
-            setEmployees={setEmployees}
-            key={employee.id}
+        users &&
+        users.map((user) => (
+          <User
+            user={user}
+            company={company}
+            setUsers={setUsers}
+            key={user.id}
           />
         ))
       )}
@@ -69,4 +70,4 @@ const EmployeesPage = ({ company }) => {
   );
 };
 
-export default EmployeesPage;
+export default UsersPage;

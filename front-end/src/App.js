@@ -27,6 +27,7 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const [filesLoading, setFilesLoading] = useState(false);
+  const [foldersLoading, setFoldersLoading] = useState(false);
   const [user, setUser] = useState();
 
   const [files, setFiles] = useState();
@@ -46,17 +47,16 @@ function App() {
         if (res.data.employed) {
           getFilesForPath(res.data.company.id, "");
           getFoldersForPath(res.data.company.id, "");
-          getEmployeesFromCompany(res.data.company.id);
-          getNotEmployedUsers();
         }
-        setLoading(false)
+        setLoading(false);
       })
       .catch((e) => {
         console.log(e);
       });
   }
 
-  function getFilesForPath(company_id, path_prop) {
+  function getFilesForPath(company_id, path_prop, signalProp = null) {
+    setFilesLoading(true);
     axios
       .get("api/companies/" + company_id + "/files", {
         headers: {
@@ -72,15 +72,16 @@ function App() {
         );
         console.log("Rezultat: " + res);
         setFiles(res.data.files);
-
-        getFoldersForPath(company_id, path_prop);
+        setFilesLoading(false);
+        setLoading(false);
       })
       .catch((e) => {
         console.log(e);
       });
   }
 
-  function getFoldersForPath(company_id, path_prop) {
+  function getFoldersForPath(company_id, path_prop, signalProp = null) {
+    setFoldersLoading(true);
     axios
       .get("api/folders/" + company_id, {
         headers: {
@@ -89,66 +90,36 @@ function App() {
         params: {
           path: path_prop,
         },
+        signal: signalProp,
       })
       .then((res) => {
         console.log(
           "Uspesan zahtev za uzimanje svih foldera za putanju: " + path_prop
         );
-        console.log("Rezultat: " + res);
+        console.log("Rezultat: ");
+        console.log(res);
         setFolders(res.data);
         setLoading(false);
-        setFilesLoading(false);
+        setFoldersLoading(false);
       })
       .catch((e) => {
         console.log(e);
       });
-  }
-
-  function getEmployeesFromCompany(id) {
-    axios
-      .get("api/companies/" + id + "/employees", config)
-      .then((res) => {
-        console.log("Uspesan zahtev za uzimanje zaposlenih");
-        console.log("Rezultat: " + res);
-        setEmployees(res.data.employees);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-
-  function getNotEmployedUsers() {
-    axios
-      .get("api/users", config)
-      .then((res) => {
-        console.log("Uspesan zahtev za uzimanje nezaposlenih");
-        console.log("Rezultat: " + res);
-        setUsers(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-
-  function handleAppendEmployee(employee) {
-    setEmployees([...employees, employee]);
-  }
-
-  function handleAppendUser(user) {
-    setUsers([...users, user]);
   }
 
   useEffect(() => {
     handleUserDetail();
-    console.log("Rendanje effect logged");
   }, [logged]);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     if (user) {
-      getFilesForPath(user.company.id, currentFolder.path);
-      getFoldersForPath(user.company.id, currentFolder.path);
-      console.log("Rendanje effect folder");
+      getFilesForPath(user.company.id, currentFolder.path, controller.signal);
+      getFoldersForPath(user.company.id, currentFolder.path, controller.signal);
     }
+
+    return () => controller.abort();
   }, [currentFolder]);
 
   return (
@@ -163,33 +134,19 @@ function App() {
               loading={loading}
               setFilesLoading={setFilesLoading}
               filesLoading={filesLoading}
+              foldersLoading={foldersLoading}
               currentFolder={currentFolder}
               setCurrentFolder={setCurrentFolder}
               user={user}
               files={files}
               folders={folders}
-              employees={employees}
-              users={users}
               setFiles={setFiles}
               setFolders={setFolders}
-              setEmployees={setEmployees}
-              setUsers={setUsers}
-              handleAppendEmployee={handleAppendEmployee}
-              handleAppendUser={handleAppendUser}
               setLogged={setLogged}
             />
           }
         />
-        <Route
-          path="/user/*"
-          element={
-            <>
-              <NavBar />
-              <UserPage user={user} />
-            </>
-          }
-        />
-        <Route path="/employees" element={null} />
+        <Route path="/user" element={<UserPage user={user} />} />
       </Routes>
     </BrowserRouter>
   );

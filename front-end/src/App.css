@@ -1,38 +1,157 @@
-.App {
+/* Button */
+
+.btn {
+  margin: 0;
+  border: 0;
+  border-radius: 6px;
+  padding: 7px 14px;
+  background-color: #33658a;
+  box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset,
+    rgba(50, 50, 93, 0.1) 0 2px 5px 0, rgba(0, 0, 0, 0.07) 0 1px 1px 0;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  flex-direction: row;
+}
+
+.btn:disabled {
+  background-color: grey !important;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  background-color: grey !important;
+}
+
+.btn:hover {
+  background-color: #4b85b1;
+}
+
+.btn:active {
+  transform: translateY(2px);
+}
+
+.btn:disabled:active {
+  transform: translateY(0);
+}
+
+.btn.delete {
+  background-color: rgb(160, 0, 0);
+}
+
+.btn.delete:hover {
+  background-color: rgb(175, 0, 0);
+}
+
+.btn.confirm {
+  background-color: green;
+}
+
+.btn.confirm:hover {
+  background-color: rgb(1, 151, 1);
+}
+
+.btn.cancel {
+  background-color: grey;
+}
+
+.btn.cancel:hover {
+  background-color: rgb(85, 85, 85);
+}
+
+/* Pagination */
+
+.pagination-item {
+  background-color: #2f4858;
+  border-radius: 5px;
+  border: 0;
+  color: antiquewhite;
+  font-weight: 600;
+  height: 25px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0 0 0;
+  text-decoration: none;
+}
+
+.pagination-item:hover {
+  cursor: pointer;
+}
+
+/* AllFiles */
+.title-button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 15px;
+}
+
+.all-files {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.all-files-title {
   text-align: center;
+  margin: 10px 20px;
+  color: #2f4858;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+/* File */
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.file-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.file-body {
+  width: 84px;
+  height: 84px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 3px;
+
+  overflow: hidden;
 }
 
-.App-link {
-  color: #61dafb;
+.file-title {
+  margin: 5px;
+  font-size: 12px;
+  color: #2f4858;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.file-body p {
+  font-size: 12px;
+}
+
+.image-icon {
+  display: block;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.file-body:hover .btn {
+  display: flex;
+}
+
+.file-body:hover .image-icon {
+  display: none;
+}
+
+.file-body .btn {
+  display: none;
+
+  width: 100%;
+  gap: 3px;
+  padding: 4px 6px;
 }
