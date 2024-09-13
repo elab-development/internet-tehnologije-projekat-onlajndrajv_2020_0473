@@ -1,0 +1,21 @@
+.user-page-wrapper {
+    height: calc(100vh - 38px);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-wrapper h4 {
+    margin: 0;
+    color: white;
+}
+
+.user-wrapper  {
+    display: flex;
+    gap: 9px;
+    flex-direction: column;
+    background-color: cornflowerblue;
+    padding: 20px;
+    border-radius: 10px;
+}
