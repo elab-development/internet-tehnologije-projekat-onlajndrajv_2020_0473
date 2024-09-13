@@ -1,1 +1,10 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/1IMeAlJr)
+Potrebno je imati instalirano:
+PHP 8.2
+Laravel 11.9
+Node 20.16.0
+NPM 10.8.2
+XAMPP
+
+Pomoću komande git clone [url] potrebno je klonirati projekat na lokalnu mašinu.
+Nakon toga potrebno je pokrenuti XAMPP i upaliti MySQL server. 
+Pomoću komande php artisan serve pokreće se server i komande npm start pokreće se web aplikacija.
