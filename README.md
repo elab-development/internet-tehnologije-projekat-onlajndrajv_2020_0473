@@ -1,10 +1,11 @@
-Potrebno je imati instalirano:
-PHP 8.2
-Laravel 11.9
-Node 20.16.0
-NPM 10.8.2
-XAMPP
+# File Management Web Application
 
-Pomoću komande git clone https://github.com/elab-development/internet-tehnologije-projekat-onlajndrajv_2020_0473 potrebno je klonirati projekat na lokalnu mašinu.
-Nakon toga potrebno je pokrenuti XAMPP i upaliti MySQL server. 
-Pomoću komande php artisan serve pokreće se server i komande npm start pokreće se web aplikacija.
+### Tech Stack
+* React.js (JavaScript, HTML)
+* CSS
+* Laravel (PHP)
+* MySQL
+
+Users of this app (e.g. employees or company owners) register or login if they already have an account via form on start page. 
+
+If they are employed, files shared within company are going to be shown at main page. Files and folders are saved in hierarchical order just like on most OS and file management softwares.
