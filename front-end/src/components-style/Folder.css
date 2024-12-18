@@ -1,0 +1,44 @@
+.folder-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.folder-body {
+  width: 84px;
+  height: 72px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
+
+  transition: all 0.1s;
+}
+
+.folder-body:hover {
+  background-color: #33648a;
+  background-color: #33648a9d;
+  transform: scale(1.07);
+  cursor: pointer;
+}
+
+.folder-title {
+  margin: 5px;
+  font-size: 12px;
+  color: #2f4858;
+}
+
+.folder-icon {
+  display: block;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.file-body:hover .image-icon {
+  display: none;
+}

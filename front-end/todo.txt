@@ -1,0 +1,6 @@
+u frontu greske kada se desi middleware greska
+sve vezano za fajlove->koristiti uloge
+izbacivanje gresaka kod employee brisanja
+
+napraviti nepostojece rute nedostupnim
+about user doraditi dizajn + promeniti kako se datum salje sa enda

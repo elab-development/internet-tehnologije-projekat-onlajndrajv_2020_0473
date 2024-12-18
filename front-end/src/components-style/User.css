@@ -1,0 +1,8 @@
+.btn-employ {
+    width: fit-content;
+    height: 30px;
+}
+
+.btn-employ:hover {
+    background-color: green;
+}
