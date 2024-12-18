@@ -10,4 +10,6 @@ Users of this app (e.g. employees or company owners) register or login if they a
 
 If they are employed, files shared within company are going to be shown at main page. Files and folders are saved in hierarchical order just like on most OS and file management softwares.
 
+Main page demo:
+
 ![Main page](/demo.gif)
